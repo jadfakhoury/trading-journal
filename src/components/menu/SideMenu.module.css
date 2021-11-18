@@ -2,7 +2,6 @@
   position: absolute;
   width: 10rem;
   border-color: transparent;
-  /* border-top-color: white; */
   border-width: 2px;
   border-style: solid;
   border-right-color: #222222;
@@ -19,6 +18,7 @@
 .menuBtn {
   width: 100%;
   color: white !important;
+  border-style: none !important;
 }
 .menuBtn:hover {
   background-color: #141414 !important;

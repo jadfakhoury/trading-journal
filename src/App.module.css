@@ -2,3 +2,13 @@
   text-align: center;
   height: 100%;
 }
+
+.mainDiv {
+  width: 87%;
+  height: 90%;
+  margin-left: 13rem;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center !important;
+  align-items: center;
+}
