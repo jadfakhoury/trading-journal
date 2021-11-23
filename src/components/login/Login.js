@@ -31,11 +31,16 @@ const passwordReducer = (state, action) => {
   return { value: '', isValid: false };
 };
 
-const Login = () => {
-  const [formIsValid, setFormIsValid] = useState(false);
-  const [showUserValid, setShowUserValid] = useState(false);
-  const [showPasswordValid, setShowPasswordValid] = useState(false);
+const Login = (props) => {
+  //const definitions
+  //=========================================================
 
+  const [formIsValid, setFormIsValid] = useState(false);
+  const [showUserValidation, setShowUserValidation] = useState(false);
+  const [showPasswordValidation, setShowPasswordValidation] = useState(false);
+  const usernameInputRef = useRef();
+  const passwordInputRef = useRef();
+  const rememberMeRef = useRef();
   const authCtx = useContext(AuthContext);
 
   const [usernameState, dispatchUsername] = useReducer(usernameReducer, {
@@ -50,6 +55,11 @@ const Login = () => {
 
   const { isValid: usernameIsValid } = usernameState;
   const { isValid: passwordIsValid } = passwordState;
+
+  //=====================================================
+
+  //functions definitions
+  //=====================================================
 
   useEffect(() => {
     const identifier = setTimeout(() => {
@@ -77,28 +87,33 @@ const Login = () => {
     dispatchPassword({ type: 'INPUT_BLUR' });
   };
 
-  const usernameInputRef = useRef();
-  const passwordInputRef = useRef();
+  const validationDisplayHandler = (elem) => {
+    if (elem.target.id === 'username') {
+      setShowUserValidation(true);
+    }
+    if (elem.target.id === 'password') {
+      setShowPasswordValidation(true);
+    }
+  };
 
   const submitHandler = (event) => {
     event.preventDefault();
+    console.log(rememberMeRef.current.checked);
     if (formIsValid) {
-      authCtx.onLogin(usernameState.value, passwordState.value);
+      authCtx.onLogin(
+        usernameState.value,
+        passwordState.value,
+        rememberMeRef.current.checked
+      );
     } else if (!usernameIsValid) {
       usernameInputRef.current.focus();
     } else {
-      passwordInputRef.current.focus();
     }
   };
+  //=====================================================
 
-  const validationDisplayHandler = (elem) => {
-    if (elem.target.id === 'username') {
-      setShowUserValid(true);
-    }
-    if (elem.target.id === 'password') {
-      setShowPasswordValid(true);
-    }
-  };
+  //return section=======================================
+  //=====================================================
 
   return (
     <Card className={styles.card}>
@@ -112,7 +127,7 @@ const Login = () => {
             onChange={usernameChangeHandler}
             onBlur={validateUsernameHandler}
             ref={usernameInputRef}
-            error={showUserValid && !usernameIsValid}
+            error={showUserValidation && !usernameIsValid}
             onFocus={validationDisplayHandler.bind(this)}
             id='username'
           />
@@ -123,22 +138,22 @@ const Login = () => {
             onChange={passwordChangeHandler}
             onBlur={validatePasswordHandler}
             ref={passwordInputRef}
-            error={showPasswordValid && !passwordIsValid}
+            error={showPasswordValidation && !passwordIsValid}
             onFocus={validationDisplayHandler.bind(this)}
             id='password'
           />
           <div className={styles.keepSigned}>
             <label>
-              <input type='checkbox' /> Keep me signed in
+              <input type='checkbox' ref={rememberMeRef} /> Remember me
             </label>
-            <a href='/'>Forgot password?</a>
+            <a href={props.forgotPassLink}>Forgot password?</a>
           </div>
           <Button type='submit' className={styles.menuBtn} variant='contained'>
             Login
           </Button>
           <div>
             {' '}
-            Don't have an account? <a href='/'>Create</a>
+            Don't have an account? <a href={props.registerLink}>Create</a>
           </div>
         </ButtonGroup>
       </form>
