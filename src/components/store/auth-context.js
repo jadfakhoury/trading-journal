@@ -10,20 +10,40 @@ const AuthContext = React.createContext({
 
 export const AuthContextProvider = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState();
-  const [userToken, setUserToken] = useState();
+  const [currentUser, setCurrentUser] = useState('');
+  const [userToken, setUserToken] = useState('');
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (localStorage.getItem('remember') === 'true') {
+      const user = localStorage.getItem('currentUser');
+      const jwtToken = localStorage.getItem('userToken');
+      if (user && jwtToken) {
+        localStorage.setItem('currentUser', user);
+        localStorage.setItem('userToken', jwtToken);
+        setIsLoggedIn(true);
+      }
+    }
+  }, []);
 
   const logoutHandler = () => {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userToken');
+    localStorage.removeItem('remember');
     setIsLoggedIn(false);
   };
 
   const loginHandler = (username, password, rememberMe) => {
-    localStorage.setItem('currentUser', currentUser);
-    localStorage.setItem('userToken', userToken);
+    const user = username;
+    const userJwt = username + 'Token';
+
+    if (rememberMe) {
+      localStorage.setItem('currentUser', user);
+      localStorage.setItem('userToken', userJwt);
+      localStorage.setItem('remember', rememberMe);
+    }
+
+    setCurrentUser(user);
+    setUserToken(userJwt);
     setIsLoggedIn(true);
   };
 

@@ -16,14 +16,14 @@ const SideMenu = () => {
           className={styles.menuBtn}
           variant='text'
         >
-          One
+          Button One
         </Button>
         <Button
           onClick={onClickHandler}
           className={styles.menuBtn}
           variant='text'
         >
-          Two
+          Button Two
         </Button>
       </ButtonGroup>
     </Box>

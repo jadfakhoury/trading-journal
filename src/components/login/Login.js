@@ -38,6 +38,7 @@ const Login = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
   const [showUserValidation, setShowUserValidation] = useState(false);
   const [showPasswordValidation, setShowPasswordValidation] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const usernameInputRef = useRef();
   const passwordInputRef = useRef();
   const rememberMeRef = useRef();
@@ -98,7 +99,7 @@ const Login = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    console.log(rememberMeRef.current.checked);
+
     if (formIsValid) {
       authCtx.onLogin(
         usernameState.value,
@@ -106,8 +107,11 @@ const Login = (props) => {
         rememberMeRef.current.checked
       );
     } else if (!usernameIsValid) {
+      setShowUserValidation(true);
+      setErrorMessage('All fields are mandatory!');
       usernameInputRef.current.focus();
     } else {
+      setShowPasswordValidation(true);
     }
   };
   //=====================================================
@@ -121,12 +125,18 @@ const Login = (props) => {
         <ButtonGroup orientation='vertical' className={styles.btnGroup}>
           <h2>Hello! let's get started</h2>
           <h4>Sign in to continue.</h4>
+          <div className={styles.errorDiv}>
+            {errorMessage && (
+              <label className={styles.error}>{errorMessage}</label>
+            )}
+          </div>
+
           <Input
             placeholder='Username'
             className={styles.input}
             onChange={usernameChangeHandler}
             onBlur={validateUsernameHandler}
-            ref={usernameInputRef}
+            inputRef={usernameInputRef}
             error={showUserValidation && !usernameIsValid}
             onFocus={validationDisplayHandler.bind(this)}
             id='username'
@@ -137,7 +147,7 @@ const Login = (props) => {
             className={styles.input}
             onChange={passwordChangeHandler}
             onBlur={validatePasswordHandler}
-            ref={passwordInputRef}
+            inputRef={passwordInputRef}
             error={showPasswordValidation && !passwordIsValid}
             onFocus={validationDisplayHandler.bind(this)}
             id='password'

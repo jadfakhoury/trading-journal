@@ -8,6 +8,10 @@
   width: 60%;
 }
 
+.form h4 {
+  margin-bottom: 0;
+}
+
 .btnGroup {
   width: 100%;
 }
@@ -26,4 +30,18 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
+}
+
+.errorDiv {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.error {
+  color: red;
+  position: absolute;
+  margin-top: -10px;
+  left: 0;
+  width: 100%;
 }
