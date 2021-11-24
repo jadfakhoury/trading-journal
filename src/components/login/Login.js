@@ -3,30 +3,14 @@ import styles from './Login.module.css';
 import { Button, Input, ButtonGroup } from '@mui/material';
 import Card from '../UI/Card';
 import AuthContext from '../store/auth-context';
-import { ValidPassword } from '../utilities/validation';
+import { ValidEmail } from '../utilities/validation';
 
-const usernameReducer = (state, action) => {
+const emailReducer = (state, action) => {
   if (action.type === 'USER_INPUT') {
-    return { value: action.val, isValid: action.val.trim().length > 5 };
+    return { value: action.val, isValid: ValidEmail.test(action.val.trim()) };
   }
   if (action.type === 'INPUT_BLUR') {
-    return { value: state.value, isValid: state.value.trim().length > 5 };
-  }
-  return { value: '', isValid: false };
-};
-
-const passwordReducer = (state, action) => {
-  if (action.type === 'USER_INPUT') {
-    return {
-      value: action.val,
-      isValid: ValidPassword.test(action.val),
-    };
-  }
-  if (action.type === 'INPUT_BLUR') {
-    return {
-      value: state.value,
-      isValid: ValidPassword.test(state.value),
-    };
+    return { value: state.value, isValid: ValidEmail.test(state.value.trim()) };
   }
   return { value: '', isValid: false };
 };
@@ -36,26 +20,21 @@ const Login = (props) => {
   //=========================================================
 
   const [formIsValid, setFormIsValid] = useState(false);
-  const [showUserValidation, setShowUserValidation] = useState(false);
+  const [showEmailValidation, setShowEmailValidation] = useState(false);
   const [showPasswordValidation, setShowPasswordValidation] = useState(false);
+  const [passwordIsValid, setPasswordIsValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const usernameInputRef = useRef();
+  const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const rememberMeRef = useRef();
   const authCtx = useContext(AuthContext);
 
-  const [usernameState, dispatchUsername] = useReducer(usernameReducer, {
+  const [emailState, dispatchEmail] = useReducer(emailReducer, {
     value: '',
     isValid: false,
   });
 
-  const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
-    value: '',
-    isValid: false,
-  });
-
-  const { isValid: usernameIsValid } = usernameState;
-  const { isValid: passwordIsValid } = passwordState;
+  const { isValid: emailIsValid } = emailState;
 
   //=====================================================
 
@@ -64,33 +43,41 @@ const Login = (props) => {
 
   useEffect(() => {
     const identifier = setTimeout(() => {
-      setFormIsValid(usernameIsValid && passwordIsValid);
+      setFormIsValid(emailIsValid && passwordIsValid);
     }, 500);
 
     return () => {
       clearTimeout(identifier);
     };
-  }, [usernameIsValid, passwordIsValid]);
+  }, [emailIsValid, passwordIsValid]);
 
-  const usernameChangeHandler = (event) => {
-    dispatchUsername({ type: 'USER_INPUT', val: event.target.value });
+  const emailChangeHandler = (event) => {
+    dispatchEmail({ type: 'USER_INPUT', val: event.target.value });
   };
 
   const passwordChangeHandler = (event) => {
-    dispatchPassword({ type: 'USER_INPUT', val: event.target.value });
+    if (event.target.value.length > 5) {
+      setPasswordIsValid(true);
+    } else {
+      setPasswordIsValid(false);
+    }
   };
 
-  const validateUsernameHandler = () => {
-    dispatchUsername({ type: 'INPUT_BLUR' });
+  const validateEmailHandler = () => {
+    dispatchEmail({ type: 'INPUT_BLUR' });
   };
 
   const validatePasswordHandler = () => {
-    dispatchPassword({ type: 'INPUT_BLUR' });
+    if (passwordInputRef.current.value.length > 5) {
+      setPasswordIsValid(true);
+    } else {
+      setPasswordIsValid(false);
+    }
   };
 
   const validationDisplayHandler = (elem) => {
-    if (elem.target.id === 'username') {
-      setShowUserValidation(true);
+    if (elem.target.id === 'email') {
+      setShowEmailValidation(true);
     }
     if (elem.target.id === 'password') {
       setShowPasswordValidation(true);
@@ -102,16 +89,18 @@ const Login = (props) => {
 
     if (formIsValid) {
       authCtx.onLogin(
-        usernameState.value,
-        passwordState.value,
+        emailState.value,
+        passwordInputRef,
         rememberMeRef.current.checked
       );
-    } else if (!usernameIsValid) {
-      setShowUserValidation(true);
+    } else if (!emailIsValid) {
+      setShowEmailValidation(true);
       setErrorMessage('All fields are mandatory!');
-      usernameInputRef.current.focus();
+      emailInputRef.current.focus();
     } else {
       setShowPasswordValidation(true);
+      setErrorMessage('All fields are mandatory!');
+      passwordInputRef.current.focus();
     }
   };
   //=====================================================
@@ -132,14 +121,14 @@ const Login = (props) => {
           </div>
 
           <Input
-            placeholder='Username'
+            placeholder='Email'
             className={styles.input}
-            onChange={usernameChangeHandler}
-            onBlur={validateUsernameHandler}
-            inputRef={usernameInputRef}
-            error={showUserValidation && !usernameIsValid}
+            onChange={emailChangeHandler}
+            onBlur={validateEmailHandler}
+            inputRef={emailInputRef}
+            error={showEmailValidation && !emailIsValid}
             onFocus={validationDisplayHandler.bind(this)}
-            id='username'
+            id='email'
           />
           <Input
             placeholder='Password'
