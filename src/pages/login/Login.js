@@ -1,9 +1,10 @@
 import { useEffect, useState, useReducer, useContext, useRef } from 'react';
 import styles from './Login.module.css';
 import { Button, Input, ButtonGroup } from '@mui/material';
-import Card from '../UI/Card';
-import AuthContext from '../store/auth-context';
-import { ValidEmail } from '../utilities/validation';
+import Card from '../../components/UI/Card';
+import AuthContext from '../../components/store/auth-context';
+import { ValidEmail } from '../../components/utilities/validation';
+import { Navigate } from 'react-router-dom';
 
 const emailReducer = (state, action) => {
   if (action.type === 'USER_INPUT') {
@@ -103,6 +104,11 @@ const Login = (props) => {
       passwordInputRef.current.focus();
     }
   };
+
+  if (authCtx.isLoggedIn) {
+    return <Navigate to='/AppWrapper' />;
+  }
+
   //=====================================================
 
   //return section=======================================

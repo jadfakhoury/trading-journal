@@ -1,5 +1,5 @@
 import { useState, useReducer } from 'react';
-import { ValidPassword } from '../utilities/validation';
+import { ValidPassword } from '../../components/utilities/validation';
 
 const passwordReducer = (state, action) => {
   if (action.type === 'USER_INPUT') {

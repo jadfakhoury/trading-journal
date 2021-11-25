@@ -1,18 +1,28 @@
-import { useContext } from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import styles from './App.module.css';
 import SideMenu from './components/menu/SideMenu';
 import Header from './components/menu/Header';
-import Login from './components/login/Login';
-import AuthContext from './components/store/auth-context';
+import Login from './pages/login/Login';
+import Welcome from './pages/welcome/Welcome';
+import Dashboard from './pages/wrapper/Dashboard';
 
 function App() {
-  const authCtx = useContext(AuthContext);
   return (
     <div className={styles.App}>
       <Header />
-      <div className={styles.mainDiv}>
-        {!authCtx.isLoggedIn && <Login forgotPassLink='/' registerLink='/' />}
-      </div>
+      <main className={styles.mainDiv}>
+        <Routes>
+          <Route exact path='/' element={<Navigate to='/Welcome' />} />
+          <Route path='/welcome' element={<Welcome />} />
+          <Route
+            exact
+            path='/login'
+            element={<Login forgotPassLink='/' registerLink='/' />}
+          />
+          <Route path='*' element={<Dashboard />} />
+          <Route exact path='/Dashboard' element={<Dashboard />} />
+        </Routes>
+      </main>
       <SideMenu />
     </div>
   );
