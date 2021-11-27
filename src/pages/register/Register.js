@@ -28,6 +28,9 @@ const DUMMY_COUNTRIES = [
   'Carlos Abbott',
 ];
 
+//=====================================================
+//Reducers Section
+//=====================================================
 const emailReducer = (state, action) => {
   if (action.type === 'USER_INPUT') {
     return { value: action.val, isValid: ValidEmail.test(action.val.trim()) };
@@ -58,7 +61,14 @@ const confirmPasswordReducer = (state, action) => {};
 
 const usernameReducer = (state, action) => {};
 
+//=====================================================
+//Main Component Section
+//=====================================================
+
 const Register = (props) => {
+  //=====================================================
+  //useState Init Section
+  //=====================================================
   const [showPasswordValidation, setShowPasswordValidation] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [showEmailValidation, setShowEmailValidation] = useState(false);
@@ -66,6 +76,9 @@ const Register = (props) => {
   const [showConfirmPasswordValidation, setShowConfirmPasswordValidation] =
     useState(false);
 
+  //=====================================================
+  //useReducer Init Section
+  //=====================================================
   const [usernameState, dispatchUsername] = useReducer(usernameReducer, {
     value: '',
     isValid: false,
@@ -89,16 +102,25 @@ const Register = (props) => {
     }
   );
 
+  //=====================================================
+  //Is Valid Section
+  //=====================================================
   const { isValid: emailIsValid } = emailState;
   const { isValid: usernameIsValid } = usernameState;
   const { isValid: passwordIsValid } = passwordState;
   const { isValid: confirmPasswordIsValid } = confirmPasswordState;
 
+  //=====================================================
+  //Input Ref Section
+  //=====================================================
   const emailInputRef = useRef();
   const usernameInputRef = useRef();
   const passwordInputRef = useRef();
   const confirmPasswordInputRef = useRef();
 
+  //=====================================================
+  //Change Handler Section
+  //=====================================================
   const passwordChangeHandler = (event) => {
     dispatchPassword({ type: 'USER_INPUT', val: event.target.value });
   };
@@ -106,6 +128,9 @@ const Register = (props) => {
   const usernameChangeHandler = () => {};
   const confirmPasswordChangeHandler = () => {};
 
+  //=====================================================
+  //Validate Handler Section
+  //=====================================================
   const validatePasswordHandler = () => {
     dispatchPassword({ type: 'INPUT_BLUR' });
   };
@@ -114,9 +139,14 @@ const Register = (props) => {
   const validateConfirmPasswordHandler = () => {};
   const validationDisplayHandler = () => {};
 
+  //=====================================================
+  //Submit Handler Section
+  //=====================================================
+  const submitHandler = () => {};
+
   return (
     <Card className={styles.card}>
-      <form className={styles.form}>
+      <form submit={submitHandler} className={styles.form}>
         <ButtonGroup className={styles.btnGroup} orientation='vertical'>
           <h1>Trading Journal</h1>
           <h4 className={styles.h}>New Here?</h4>
