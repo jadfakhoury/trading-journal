@@ -1,9 +1,48 @@
 .card {
   width: 40%;
-  height: 55%;
-  min-height: 378px;
+  height: 65%;
+  min-height: 400px;
 }
 
 .form {
   width: 60%;
+}
+
+.form h4,
+h5 {
+  margin: 0 !important;
+}
+.form h1 {
+  margin-top: 0;
+}
+
+.btnGroup {
+  width: 100%;
+}
+
+.input {
+  border-radius: 3px;
+  background-color: rgb(230, 229, 229);
+  margin-bottom: 1rem;
+  padding: 5px;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box; /* Opera/IE 8+ */
+}
+
+.select {
+  background-color: rgb(230, 229, 229);
+  margin-bottom: 1rem;
+  border-style: none !important;
+  text-align: left;
+  padding: 5px;
+}
+.em {
+  font-style: normal;
+  color: rgb(158, 158, 158);
+}
+.errorDiv {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  position: relative;
 }

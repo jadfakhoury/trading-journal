@@ -153,7 +153,7 @@ const Login = (props) => {
             </label>
             <a href={props.forgotPassLink}>Forgot password?</a>
           </div>
-          <Button type='submit' className={styles.menuBtn} variant='contained'>
+          <Button type='submit' variant='contained'>
             Login
           </Button>
           <div>

@@ -2,6 +2,7 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 import styles from './App.module.css';
 import SideMenu from './components/menu/SideMenu';
 import Header from './components/menu/Header';
+import Register from './pages/register/Register';
 import Login from './pages/login/Login';
 import Welcome from './pages/welcome/Welcome';
 import Dashboard from './pages/wrapper/Dashboard';
@@ -19,6 +20,7 @@ function App() {
             path='/login'
             element={<Login forgotPassLink='/' registerLink='/' />}
           />
+          <Route exact path='/register' element={<Register />} />
           <Route path='*' element={<Dashboard />} />
           <Route exact path='/Dashboard' element={<Dashboard />} />
         </Routes>
