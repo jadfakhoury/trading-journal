@@ -57,7 +57,21 @@ const passwordReducer = (state, action) => {
   return { value: '', isValid: false };
 };
 
-const confirmPasswordReducer = (state, action) => {};
+const confirmPasswordReducer = (state, action) => {
+  if (action.type === 'USER_INPUT') {
+    return {
+      value: action.val,
+      isValid: action.val.confPass === action.val.pass,
+    };
+  }
+  if (action.type === 'INPUT_BLUR') {
+    return {
+      value: state.value,
+      isValid: action.val.confPass === action.val.pass,
+    };
+  }
+  return { value: '', isValid: false };
+};
 
 const usernameReducer = (state, action) => {};
 
@@ -156,8 +170,18 @@ const Register = (props) => {
   const emailChangeHandler = (event) => {
     dispatchEmail({ type: 'USER_INPUT', val: event.target.value });
   };
-  const usernameChangeHandler = () => {};
-  const confirmPasswordChangeHandler = () => {};
+
+  const usernameChangeHandler = (event) => {};
+
+  const confirmPasswordChangeHandler = (event) => {
+    dispatchConfirmPassword({
+      type: 'USER_INPUT',
+      val: {
+        pass: passwordInputRef.current.value,
+        confPass: event.target.value,
+      },
+    });
+  };
 
   //=====================================================
   //Validate Handler Section
@@ -171,7 +195,15 @@ const Register = (props) => {
 
   //TODO: to be done
   const validateUsernameHandler = () => {};
-  const validateConfirmPasswordHandler = () => {};
+  const validateConfirmPasswordHandler = () => {
+    dispatchConfirmPassword({
+      type: 'INPUT_BLUR',
+      val: {
+        pass: passwordInputRef.current.value,
+        confPass: confirmPasswordInputRef.current.value,
+      },
+    });
+  };
   const validationDisplayHandler = () => {};
 
   //=====================================================
@@ -179,14 +211,13 @@ const Register = (props) => {
   //=====================================================
   const submitHandler = (event) => {
     event.preventDefault();
-
     if (formIsValid) {
     }
   };
 
   return (
     <Card className={styles.card}>
-      <form submit={submitHandler} className={styles.form}>
+      <form onSubmit={submitHandler} className={styles.form}>
         <ButtonGroup className={styles.btnGroup} orientation='vertical'>
           <h1>Trading Journal</h1>
           <h4 className={styles.h}>New Here?</h4>
