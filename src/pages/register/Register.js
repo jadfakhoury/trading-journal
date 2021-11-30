@@ -69,6 +69,7 @@ const Register = (props) => {
   //=====================================================
   //useState Init Section
   //=====================================================
+  const [formIsValid, setFormIsValid] = useState(false);
   const [showPasswordValidation, setShowPasswordValidation] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [showEmailValidation, setShowEmailValidation] = useState(false);
@@ -111,6 +112,34 @@ const Register = (props) => {
   const { isValid: confirmPasswordIsValid } = confirmPasswordState;
 
   //=====================================================
+  //useEffect Section
+  //=====================================================
+
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      setFormIsValid(
+        emailIsValid &&
+          passwordIsValid &&
+          usernameIsValid &&
+          confirmPasswordIsValid
+      );
+    }, 500);
+
+    return () => {
+      clearTimeout(identifier);
+    };
+  }, [emailIsValid, passwordIsValid, usernameIsValid, confirmPasswordIsValid]);
+
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      //TODO: Call API to verify username
+    }, 500);
+    return () => {
+      clearTimeout(identifier);
+    };
+  }, []);
+
+  //=====================================================
   //Input Ref Section
   //=====================================================
   const emailInputRef = useRef();
@@ -124,7 +153,9 @@ const Register = (props) => {
   const passwordChangeHandler = (event) => {
     dispatchPassword({ type: 'USER_INPUT', val: event.target.value });
   };
-  const emailChangeHandler = () => {};
+  const emailChangeHandler = (event) => {
+    dispatchEmail({ type: 'USER_INPUT', val: event.target.value });
+  };
   const usernameChangeHandler = () => {};
   const confirmPasswordChangeHandler = () => {};
 
@@ -134,7 +165,11 @@ const Register = (props) => {
   const validatePasswordHandler = () => {
     dispatchPassword({ type: 'INPUT_BLUR' });
   };
-  const validateEmailHandler = () => {};
+  const validateEmailHandler = () => {
+    dispatchPassword({ type: 'INPUT_BLUR' });
+  };
+
+  //TODO: to be done
   const validateUsernameHandler = () => {};
   const validateConfirmPasswordHandler = () => {};
   const validationDisplayHandler = () => {};
@@ -142,7 +177,12 @@ const Register = (props) => {
   //=====================================================
   //Submit Handler Section
   //=====================================================
-  const submitHandler = () => {};
+  const submitHandler = (event) => {
+    event.preventDefault();
+
+    if (formIsValid) {
+    }
+  };
 
   return (
     <Card className={styles.card}>
