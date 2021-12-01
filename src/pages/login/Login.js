@@ -1,4 +1,5 @@
 import { useEffect, useState, useReducer, useContext, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './Login.module.css';
 import { Button, Input, ButtonGroup } from '@mui/material';
 import Card from '../../components/UI/Card';
@@ -158,7 +159,7 @@ const Login = (props) => {
           </Button>
           <div>
             {' '}
-            Don't have an account? <a href={props.registerLink}>Create</a>
+            Don't have an account? <Link to={props.registerLink}>Create</Link>
           </div>
         </ButtonGroup>
       </form>

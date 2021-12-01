@@ -46,3 +46,10 @@ h5 {
   margin-bottom: 20px;
   position: relative;
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px rgb(230, 229, 229) inset !important;
+}

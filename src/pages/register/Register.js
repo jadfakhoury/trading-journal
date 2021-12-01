@@ -1,5 +1,8 @@
-import { useState, useReducer, useEffect, useRef } from 'react';
+import { useState, useReducer, useEffect, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { Input, ButtonGroup, Select, MenuItem, Button } from '@mui/material';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
 import styles from './Register.module.css';
 import {
   ValidEmail,
@@ -73,8 +76,6 @@ const confirmPasswordReducer = (state, action) => {
   return { value: '', isValid: false };
 };
 
-const usernameReducer = (state, action) => {};
-
 //=====================================================
 //Main Component Section
 //=====================================================
@@ -84,6 +85,7 @@ const Register = (props) => {
   //useState Init Section
   //=====================================================
   const [formIsValid, setFormIsValid] = useState(false);
+  const [usernameIsValid, setUsernameIsValid] = useState(false);
   const [showPasswordValidation, setShowPasswordValidation] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [showEmailValidation, setShowEmailValidation] = useState(false);
@@ -94,10 +96,6 @@ const Register = (props) => {
   //=====================================================
   //useReducer Init Section
   //=====================================================
-  const [usernameState, dispatchUsername] = useReducer(usernameReducer, {
-    value: '',
-    isValid: false,
-  });
 
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
     value: '',
@@ -121,13 +119,23 @@ const Register = (props) => {
   //Is Valid Section
   //=====================================================
   const { isValid: emailIsValid } = emailState;
-  const { isValid: usernameIsValid } = usernameState;
   const { isValid: passwordIsValid } = passwordState;
   const { isValid: confirmPasswordIsValid } = confirmPasswordState;
 
   //=====================================================
+  //Input Ref Section
+  //=====================================================
+  const emailInputRef = useRef();
+  const usernameInputRef = useRef();
+  const passwordInputRef = useRef();
+  const confirmPasswordInputRef = useRef();
+
+  //=====================================================
   //useEffect Section
   //=====================================================
+
+  //TODO: create the db call to verify user
+  const userIsAvailable = useCallback((user) => {}, []);
 
   useEffect(() => {
     const identifier = setTimeout(() => {
@@ -146,20 +154,12 @@ const Register = (props) => {
 
   useEffect(() => {
     const identifier = setTimeout(() => {
-      //TODO: Call API to verify username
+      userIsAvailable(usernameInputRef.current.value);
     }, 500);
     return () => {
       clearTimeout(identifier);
     };
-  }, []);
-
-  //=====================================================
-  //Input Ref Section
-  //=====================================================
-  const emailInputRef = useRef();
-  const usernameInputRef = useRef();
-  const passwordInputRef = useRef();
-  const confirmPasswordInputRef = useRef();
+  }, [usernameInputRef.cuurent.value, userIsAvailable]);
 
   //=====================================================
   //Change Handler Section
@@ -170,8 +170,6 @@ const Register = (props) => {
   const emailChangeHandler = (event) => {
     dispatchEmail({ type: 'USER_INPUT', val: event.target.value });
   };
-
-  const usernameChangeHandler = (event) => {};
 
   const confirmPasswordChangeHandler = (event) => {
     dispatchConfirmPassword({
@@ -194,7 +192,10 @@ const Register = (props) => {
   };
 
   //TODO: to be done
-  const validateUsernameHandler = () => {};
+  const validateUsernameHandler = () => {
+    setUsernameIsValid(true);
+  };
+
   const validateConfirmPasswordHandler = () => {
     dispatchConfirmPassword({
       type: 'INPUT_BLUR',
@@ -204,7 +205,24 @@ const Register = (props) => {
       },
     });
   };
-  const validationDisplayHandler = () => {};
+
+  const validationDisplayHandler = (elem) => {
+    if (elem.target.id === 'username') {
+      setShowUsernameValidation(true);
+    }
+    if (elem.target.id === 'email') {
+      setShowEmailValidation(true);
+    }
+    if (elem.target.id === 'password') {
+      setShowPasswordValidation(true);
+    }
+    if (elem.target.id === 'password') {
+      setShowPasswordValidation(true);
+    }
+    if (elem.target.id === 'confirmPassword') {
+      setShowConfirmPasswordValidation(true);
+    }
+  };
 
   //=====================================================
   //Submit Handler Section
@@ -230,12 +248,18 @@ const Register = (props) => {
           <Input
             placeholder='Username'
             className={styles.input}
-            onChange={usernameChangeHandler}
             onBlur={validateUsernameHandler}
             inputRef={usernameInputRef}
             error={showUsernameValidation && !usernameIsValid}
             onFocus={validationDisplayHandler.bind(this)}
             id='username'
+            endAdornment={
+              usernameIsValid && (
+                <InputAdornment position='start'>
+                  <CheckTwoToneIcon color='success' />
+                </InputAdornment>
+              )
+            }
           />
           <Input
             placeholder='Email'
@@ -247,7 +271,7 @@ const Register = (props) => {
             onFocus={validationDisplayHandler.bind(this)}
             id='email'
           />
-
+          {/* TODO: Create the proper validation for the country droplist */}
           <Select
             variant='standard'
             displayEmpty
@@ -291,7 +315,7 @@ const Register = (props) => {
           </Button>
           <div>
             {' '}
-            Already have an account? <a href='/'>Login</a>
+            Already have an account? <Link to='/login'>Login</Link>
           </div>
         </ButtonGroup>
       </form>

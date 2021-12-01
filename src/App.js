@@ -18,7 +18,9 @@ function App() {
           <Route
             exact
             path='/login'
-            element={<Login forgotPassLink='/' registerLink='/' />}
+            element={
+              <Login forgotPassLink='/forgotPass' registerLink='/register' />
+            }
           />
           <Route exact path='/register' element={<Register />} />
           <Route path='*' element={<Dashboard />} />
