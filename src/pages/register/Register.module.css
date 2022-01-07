@@ -1,7 +1,7 @@
 .card {
   width: 40%;
   height: 65%;
-  min-height: 400px;
+  min-height: 510px;
 }
 
 .form {
@@ -41,6 +41,11 @@ h5 {
   font-style: normal;
   color: rgb(158, 158, 158);
 }
+
+.link {
+  margin-top: 7px;
+}
+
 .errorDiv {
   margin-top: 20px;
   margin-bottom: 20px;

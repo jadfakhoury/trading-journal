@@ -157,7 +157,8 @@ const Login = (props) => {
           <Button type='submit' variant='contained'>
             Login
           </Button>
-          <div>
+
+          <div className={styles.link}>
             {' '}
             Don't have an account? <Link to={props.registerLink}>Create</Link>
           </div>

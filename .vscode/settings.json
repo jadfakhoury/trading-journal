@@ -1,5 +1,6 @@
 {
   "material-icon-theme.activeIconPack": "react_redux",
   "editor.showFoldingControls": "always",
-  "notebook.showFoldingControls": "always"
+  "notebook.showFoldingControls": "always",
+  "editor.linkedEditing": true
 }

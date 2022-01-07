@@ -32,6 +32,10 @@
   margin-bottom: 1rem;
 }
 
+.link {
+  margin-top: 7px;
+}
+
 .errorDiv {
   margin-top: 20px;
   margin-bottom: 20px;

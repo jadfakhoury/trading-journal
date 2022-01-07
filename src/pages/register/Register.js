@@ -159,7 +159,7 @@ const Register = (props) => {
     return () => {
       clearTimeout(identifier);
     };
-  }, [usernameInputRef.cuurent.value, userIsAvailable]);
+  }, [usernameInputRef, userIsAvailable]);
 
   //=====================================================
   //Change Handler Section
@@ -313,7 +313,8 @@ const Register = (props) => {
           <Button type='submit' className={styles.menuBtn} variant='contained'>
             Register
           </Button>
-          <div>
+
+          <div className={styles.link}>
             {' '}
             Already have an account? <Link to='/login'>Login</Link>
           </div>
