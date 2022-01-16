@@ -9,27 +9,7 @@ import {
   ValidPassword,
 } from '../../components/utilities/validation';
 import Card from '../../components/UI/Card';
-
-const DUMMY_COUNTRIES = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-];
+import { DUMMY_COUNTRIES } from '../../components/Data/DummyData';
 
 //=====================================================
 //Reducers Section
